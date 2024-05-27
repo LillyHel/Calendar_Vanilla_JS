@@ -1,0 +1,200 @@
+body {
+  display: flex;
+  margin-top: 50px;
+  flex-direction: column;
+  background-color: #FFFCFF;
+}
+button {
+  width: 75px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+}
+
+#header {
+  padding: 10px;
+  margin: 20px;
+  color: #d36c6c;
+  font-size: 26px;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-evenly;
+}
+#header button {
+  background-color:#d36c6c;
+}
+#yearContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#weekdays {
+  width: 33%;
+  display: flex;
+  color: #247BA0;
+}
+
+
+
+.day {
+  width: calc(100% / 7);
+  height: 40px;
+  padding: 5px;
+  block-size: auto;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.day + #currentDay {
+  border-style: solid;
+  border-color: #d36c6c;
+}
+
+.month {
+  width: 33%;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0px 0px 3px #CBD4C2;
+}
+
+.monthName {
+  padding: 10px;
+  color: #d36c6c;
+  font-size: 18px;
+  font-family: sans-serif;
+  display: flex;
+}
+
+.weekdayContainer {
+  height: 20px;
+  block-size: auto;
+  border-bottom-style: solid;
+  border-color: black;
+  font-family: sans-serif;
+  font-size: 12px;
+  display: flex;
+  
+}
+
+.calContainer {
+  display: flex;
+  flex-direction: row;
+
+}
+
+.kwColumn {
+  width: 12%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.kw {
+  cursor: default !important;
+  height: 40px;
+  margin: 5px;
+  box-sizing: border-box;
+  color: #d36c6c;
+  font-family: sans-serif;
+  font-size: 12px;
+  background-color: #FFFCFF;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar {
+  width: 88%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.event {
+  font-size: 10px;
+  padding: 3px;
+  background-color: #58bae4;
+  color: white;
+  border-radius: 5px;
+  max-height: 55px;
+  overflow: hidden;
+}
+
+.padding {
+  cursor: default !important;
+  background-color: #FFFCFF !important;
+  box-shadow: none !important;
+}
+
+.holiday {
+  background-color: #dfe6d9;
+}
+
+#newEventModal, #deleteEventModal {
+  display: none;
+  z-index: 20;
+  padding: 25px;
+  background-color: #e8f4fa;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 5px;
+  width: 350px;
+  top: 100px;
+  left: calc(50% - 175px);
+  position: absolute;
+  font-family: sans-serif;
+}
+#eventTitleInput {
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  box-shadow: 0px 0px 3px gray;
+}
+#eventTitleInput.error {
+  border: 2px solid red;
+}
+#cancelButton, #deleteButton {
+  background-color: #d36c6c;
+}
+#saveButton, #closeButton {
+  background-color: #92a1d1;
+}
+#eventText {
+  font-size: 14px;
+}
+#modalBackDrop {
+  display: none;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(0,0,0,0.8);
+}
+
+
+
+@media screen and (max-width: 1000px) {
+  .month {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .month {
+    width: 100%;
+  }
+}

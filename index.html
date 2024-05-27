@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalender</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="header">
+      <button id="backButton">Back</button>
+      <div>
+        <div id="yearDisplay"></div>
+        <select id="yearPicker" onchange="updateYearOnSelected()"></select>
+      </div>
+
+      <button id="nextButton">Next</button>
+    </div>
+
+    <div id="yearContainer"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
