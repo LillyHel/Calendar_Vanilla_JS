@@ -57,7 +57,7 @@ button {
 }
 
 .month {
-  width: 33%;
+  width: 100%;
   box-sizing: border-box;
   background-color: white;
   box-shadow: 0px 0px 3px #CBD4C2;
@@ -187,14 +187,14 @@ button {
 
 
 
-@media screen and (max-width: 1000px) {
+@media screen and (min-width: 600px) {
   .month {
     width: 50%;
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 992px) {
   .month {
-    width: 100%;
+    width: 33%;
   }
 }
