@@ -107,28 +107,31 @@ function loadweekdayContainers(month) {
     <div class="day">So</div>`;
 }
 
-function loadKWs(paddingDays, daysInMonth, mKW, monthNum) {
-  const kwInMonth = Math.ceil((paddingDays + daysInMonth) / 7);
+function loadKWs(mKW, monthNum, daysInMonth) {
 
-  const firstOfMonthIsMonday = new Date(year, monthNum, 1).toLocaleDateString("de-DE", {
-    weekday: "long",
-  }) === "Montag"; 
+  for (let i = 1; i <= daysInMonth; i++) {
+    const weekNumber = getISOWeekNumber(year, monthNum, i);
 
-  for (let l = 1; l <= kwInMonth; l++) {
-    if (!firstOfMonthIsMonday) {
-      mKW.innerHTML += `<div class="kw">${kwNum - 1}</div>`;
-      kwNum++; 
-    } else {
-      mKW.innerHTML += `<div class="kw">${kwNum}</div>`;
-      kwNum++;
-    }
-
-    if (kwNum > 52) {
-      kwNum = 1;
+    // Nur an den ersten Tagen der Kalenderwoche einfügen
+    if (new Date(year, monthNum, i).getDay() === 1 || i === 1) {
+      mKW.innerHTML += `<div class="kw">${weekNumber}</div>`;
     }
   }
 }
 
+function getISOWeekNumber(year, monthNum, dayNum) {
+  const target = new Date(year, monthNum, dayNum);
+  const dayNumber = (target.getDay() + 6) % 7;  // Ziel-Datum statt `date`
+  target.setDate(target.getDate() - dayNumber + 3);
+  const firstThursday = new Date(target.getFullYear(), 0, 4);
+  const firstThursdayDayNumber = (firstThursday.getDay() + 6) % 7;
+  firstThursday.setDate(firstThursday.getDate() - firstThursdayDayNumber + 3);
+  const weekNumber = 1 + Math.round(((target.getTime() - firstThursday.getTime()) / 86400000 - 3) / 7);
+
+  return weekNumber;
+}
+
+ 
 function loadMonth(monthNum, monthName) { 
   const mContainer = document.getElementById(monthName);
   const mKW = mContainer.querySelector(".kwColumn");
@@ -138,7 +141,7 @@ function loadMonth(monthNum, monthName) {
   
   calcDynamicHolidays(year);
   loadweekdayContainers(monthName);
-  loadKWs(paddingDays, daysInMonth, mKW, monthNum);
+  loadKWs(mKW, monthNum, daysInMonth);
 
   for (let j = 1; j <= paddingDays + daysInMonth; j++) {
     const daySquare = document.createElement("div");
@@ -257,8 +260,8 @@ function initButtons() {
 }
 
 function updateYearOnSelected() {
-  const selectedYear = parseInt(document.getElementById('yearPicker').value, 10);
-  yearNav = selectedYear - new Date().getFullYear();
+  const selectedYear = document.getElementById('yearPicker').value;
+  setYear(selectedYear); 
   loadYear();
 }
 
