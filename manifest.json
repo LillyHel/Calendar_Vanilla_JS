@@ -1,6 +1,6 @@
 {
-  "name": "My PWA",
-  "short_name": "PWA",
+  "name": "Kalender",
+  "short_name": "Kalender",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -18,7 +18,7 @@
     },
     {
       "src": "/images/logo.png",
-      "sizes": "512x512",
+      "sizes": "300x300",
       "type": "image/png"
     }
   ]

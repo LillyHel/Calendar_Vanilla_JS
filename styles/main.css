@@ -53,6 +53,7 @@ button {
 
 .day + #currentDay {
   border-style: solid;
+  border-radius: 5px;
   border-color: #d36c6c;
 }
 
@@ -137,6 +138,7 @@ button {
 
 .holiday {
   background-color: #dfe6d9;
+  border-radius: 5px;
 }
 
 #newEventModal, #deleteEventModal {
@@ -193,7 +195,7 @@ button {
   }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (min-width: 992px) {
   .month {
     width: 33%;
   }
