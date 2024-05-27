@@ -1,6 +1,17 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    }).catch(error => {
+      console.log('Service Worker registration failed:', error);
+    });
+  });
+}
+
+
 let yearNav = 0; // ausgewähltes Jahr
 let clicked = null;
-let kwNum = 1;
+
 const date = new Date();
 let year = new Date().getFullYear();
 //let month = new Date().getMonth(); 
@@ -246,13 +257,13 @@ function deleteDynamicHolidays(map, deleteValue) {
 function initButtons() {
   document.getElementById("nextButton").addEventListener("click", () => {
     yearNav = 1;
-    kwNum = 1;
+
     loadYear();
   });
 
   document.getElementById("backButton").addEventListener("click", () => {
     yearNav = -1;
-    kwNum = 1;
+
     loadYear();
   });
 
@@ -263,6 +274,12 @@ function updateYearOnSelected() {
   const selectedYear = document.getElementById('yearPicker').value;
   setYear(selectedYear); 
   loadYear();
+}
+
+function resetToCurrentYear(){
+  year = new Date().getFullYear();
+  yearNav = 0; 
+  loadYear(); 
 }
 
 initButtons();
