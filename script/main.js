@@ -8,14 +8,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-
-let yearNav = 0; // ausgewähltes Jahr
-let clicked = null;
-
-const date = new Date();
-let year = new Date().getFullYear();
-//let month = new Date().getMonth(); 
-
 const weekdayContainers = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 
@@ -29,9 +21,11 @@ const holidays = new Map([
   ["26.12.", "Zweiter Weihnachtsfeiertag"],
 ]);
 
-const currentDate = new Date();
-const currentMonth = months[currentDate.getMonth()];
-const currentDay = currentDate.getDate();
+let yearNav = 0; // ausgewähltes Jahr
+const date = new Date();
+let year = new Date().getFullYear();
+const currentMonth = months[date.getMonth()];
+const currentDay = date.getDate();
 
 function setYear(yearNum){
   date.setFullYear(yearNum); 
@@ -42,17 +36,8 @@ function getYear() {
   return year; 
 }
 
-/*
-function setMonth(date) {
-  month = date.getMonth(); 
-}
-
-function getMonth() {
-  return month; 
-}*/
-
+//Laden jedes Monats des eingestellen Jahres sowie Errechnung der Feiertage
 function loadYear() {
-  // heutiges Datum
 
   const yearContainer = document.getElementById("yearContainer");
   yearContainer.innerHTML = "";
@@ -61,6 +46,7 @@ function loadYear() {
     setYear(year + yearNav);
   }
 
+  document.getElementById("titleTag").innerHTML = "Kalenderjahr " + year;
   document.getElementById("yearDisplay").innerText = year;
 
   initPicker(year);
@@ -79,6 +65,7 @@ function loadYear() {
 
 }
 
+//Jahresauswahl initialisieren
 function initPicker(year) {
   const yearPicker = document.getElementById("yearPicker");
   yearPicker.innerHTML = "";
@@ -92,6 +79,7 @@ function initPicker(year) {
   yearPicker.value = year;
 }
 
+// Layout für jeden Monat initialisieren 
 function loadMonthLayout(monthName) {
   const monthContainer = document.getElementById(monthName);
   monthContainer.innerHTML = `
@@ -103,6 +91,7 @@ function loadMonthLayout(monthName) {
     </div>`;
 }
 
+//Fügt Wochentage zu jedem Monat hinzu
 function loadweekdayContainers(month) {
   const monthContainer = document.getElementById(month);
   const weekContainer = monthContainer.querySelector(".weekdayContainer");
@@ -118,21 +107,21 @@ function loadweekdayContainers(month) {
     <div class="day">So</div>`;
 }
 
+//Fügt Kalenderwochen zu jedem Monat hinzu
 function loadKWs(mKW, monthNum, daysInMonth) {
-
   for (let i = 1; i <= daysInMonth; i++) {
     const weekNumber = getISOWeekNumber(year, monthNum, i);
 
-    // Nur an den ersten Tagen der Kalenderwoche einfügen
     if (new Date(year, monthNum, i).getDay() === 1 || i === 1) {
       mKW.innerHTML += `<div class="kw">${weekNumber}</div>`;
     }
   }
 }
 
+//Berechnung der Kalenderwoche für ein bestimmtes Datum 
 function getISOWeekNumber(year, monthNum, dayNum) {
   const target = new Date(year, monthNum, dayNum);
-  const dayNumber = (target.getDay() + 6) % 7;  // Ziel-Datum statt `date`
+  const dayNumber = (target.getDay() + 6) % 7; 
   target.setDate(target.getDate() - dayNumber + 3);
   const firstThursday = new Date(target.getFullYear(), 0, 4);
   const firstThursdayDayNumber = (firstThursday.getDay() + 6) % 7;
@@ -142,17 +131,17 @@ function getISOWeekNumber(year, monthNum, dayNum) {
   return weekNumber;
 }
 
- 
+//Laden des Monats mit Wochentagen, Kalenderwochen
 function loadMonth(monthNum, monthName) { 
   const mContainer = document.getElementById(monthName);
   const mKW = mContainer.querySelector(".kwColumn");
   const mCalendar = mContainer.querySelector(".calendar");
   const daysInMonth = new Date(year, monthNum + 1, 0).getDate();
   const paddingDays = calcPaddingDays(monthNum);
-  
-  calcDynamicHolidays(year);
+
   loadweekdayContainers(monthName);
   loadKWs(mKW, monthNum, daysInMonth);
+
 
   for (let j = 1; j <= paddingDays + daysInMonth; j++) {
     const daySquare = document.createElement("div");
@@ -168,11 +157,32 @@ function loadMonth(monthNum, monthName) {
     }
 
     if (j > paddingDays) {
-      daySquare.innerText = j - paddingDays;
+      daySquare.innerHTML = `<div class="dayNumber">${j - paddingDays}</div>`;
       if (holidays.has(dayMonthDate)) {
-        daySquare.setAttribute("id", holidays.get(dayMonthDate));
-        daySquare.addEventListener("click", () => alert(daySquare.id));
+        const holidayDropdown = document.createElement("div");
+        holidayDropdown.classList.add("holidayDropdown");
+        holidayDropdown.setAttribute("id", holidays.get(dayMonthDate));
+        holidayDropdown.innerHTML = holidays.get(dayMonthDate); 
+        daySquare.appendChild(holidayDropdown); 
         daySquare.classList.add("holiday");
+
+        //Bezeichnung der Feiertage erscheint als Dropdown beim Klicken auf den Tag
+        daySquare.addEventListener("click", () => {
+      
+        var dropdown =  document.getElementById(holidays.get(dayMonthDate));
+        dropdown.classList.toggle("show");
+      
+          var rect = dropdown.getBoundingClientRect();
+          var windowWidth = window.innerWidth;
+   
+          if (rect.right > windowWidth / 2) {
+            dropdown.parentElement.style.justifyContent = 'right'; 
+        
+          } else {
+            dropdown.parentElement.style.justifyContent = 'left'; 
+          }
+        });
+      
       }
     } else {
       daySquare.classList.add("padding");
@@ -182,6 +192,7 @@ function loadMonth(monthNum, monthName) {
   }
 }
 
+//Berechnet wie viele 'Fülltage' es in einer Woche vor dem 1. des Monats gibt
 function calcPaddingDays(monthNum) {
   const firstDayOfMonth = new Date(year, monthNum, 1);
   const dateString = firstDayOfMonth.toLocaleDateString("de-DE", {
@@ -195,6 +206,7 @@ function calcPaddingDays(monthNum) {
   return paddingDays;
 }
 
+//Berechnet die dynamischen Feiertage im Jahr
 function calcDynamicHolidays(year) {
   const dynamicHolidays = ["Karfreitag", "Ostersonntag", "Ostermontag", "Pfingstsonntag", "Pfingstmontag", "Himmelfahrt"];
   dynamicHolidays.forEach(holiday => deleteDynamicHolidays(holidays, holiday));
@@ -216,6 +228,7 @@ function calcDynamicHolidays(year) {
   });
 }
 
+//Berechnung des Osterdatums
 function calculateEasterDate(year) {
   const a = year % 19;
   const b = Math.floor(year / 100);
@@ -234,17 +247,19 @@ function calculateEasterDate(year) {
   return [month, day];
 }
 
+//Berechnung des Datums auf den Buß-und Bettag fällt
 function calcBussUndBet(year) {
   deleteDynamicHolidays(holidays, "Buß- und Bettag");
 
-  let bussUndBettag = new Date(year, 10, 23); // Der 23. November im gegebenen Jahr
-  while (bussUndBettag.getDay() !== 3 /* Mittwoch */) {
+  let bussUndBettag = new Date(year, 10, 23);
+  while (bussUndBettag.getDay() !== 3) {
     bussUndBettag.setDate(bussUndBettag.getDate() - 1);
   }
 
   holidays.set(bussUndBettag.toLocaleDateString("de-DE", { month: "numeric", day: "numeric" }), "Buß- und Bettag");
 }
 
+//Entfernt alle dynamischen Feiertage aus der Feiertage-Map 
 function deleteDynamicHolidays(map, deleteValue) {
   for (let [key, value] of map) {
     if (value === deleteValue) {
@@ -254,6 +269,7 @@ function deleteDynamicHolidays(map, deleteValue) {
   }
 }
 
+//Initialisert Vor- und Zurück-Buttons
 function initButtons() {
   document.getElementById("nextButton").addEventListener("click", () => {
     yearNav = 1;
@@ -270,17 +286,44 @@ function initButtons() {
   document.getElementById("yearPicker").addEventListener("change", updateYearOnSelected);
 }
 
+//Laden des ausgewählten Jahres
 function updateYearOnSelected() {
   const selectedYear = document.getElementById('yearPicker').value;
   setYear(selectedYear); 
+  yearNav = 0; 
   loadYear();
 }
 
+//Zurücksetzen auf das aktuelle Jahr
 function resetToCurrentYear(){
   year = new Date().getFullYear();
   yearNav = 0; 
   loadYear(); 
 }
+
+//Öffnen und Schließen der Top-Navigation 
+function openNav() {
+  document.getElementById("topNav").style.height = "25%";
+}
+
+function closeNav() {
+  document.getElementById("topNav").style.height = "0%";
+}
+
+//Schließt alle Dropdowns beim Klicken außerhalb eines Dropdowns 
+window.onclick = function(event) {
+  if (!event.target.matches('.holiday')) {
+    var dropdowns = document.getElementsByClassName("holidayDropdown");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+
 
 initButtons();
 loadYear();

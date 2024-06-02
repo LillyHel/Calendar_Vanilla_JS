@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kalender</title>
+    <title id="titleTag"></title>
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#000000" />
 
@@ -11,14 +11,110 @@
   </head>
   <body>
     <div id="header">
-      <button id="backButton">Back</button>
-      <div>
+      <button id="backButton" title="Vorheriges Jahr">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="40px"
+          viewBox="0 0 24 24"
+          width="40px"
+          fill="#e8eaed">
+          <path d="M0 0h24v24H0V0z" fill="none" />
+          <path
+            d="M14.71 6.71c-.39-.39-1.02-.39-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41z" />
+        </svg>
+      </button>
+
+      <div id="yearMenu">
         <div id="yearDisplay"></div>
-        <select id="yearPicker" onchange="updateYearOnSelected()"></select>
-        <button id="reset" onclick="resetToCurrentYear()">Reset</button>
+        <button
+          id="topNavButton"
+          title="Jahreszahl auswählen"
+          onclick="openNav()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            enable-background="new 0 0 20 20"
+            height="40px"
+            viewBox="0 0 20 20"
+            width="40px"
+            fill="#e8eaed">
+            <rect fill="none" height="20" width="20" />
+            <path
+              d="M9.5,18h-5C3.67,18,3,17.33,3,16.5v-11C3,4.67,3.67,4,4.5,4H6V2.75C6,2.34,6.34,2,6.75,2S7.5,2.34,7.5,2.75V4h5V2.75 C12.5,2.34,12.84,2,13.25,2S14,2.34,14,2.75V4h1.5C16.33,4,17,4.67,17,5.5V10h-1.5V9h-11v7.5h5V18z M17.78,13.99l0.65-0.65 c0.29-0.29,0.29-0.77,0-1.06l-0.71-0.71c-0.29-0.29-0.77-0.29-1.06,0l-0.65,0.65L17.78,13.99z M17.19,14.58l-4.2,4.2 C12.85,18.92,12.66,19,12.46,19H11.5c-0.28,0-0.5-0.22-0.5-0.5v-0.96c0-0.2,0.08-0.39,0.22-0.53l4.2-4.2L17.19,14.58z" />
+          </svg>
+        </button>
+        <button
+          id="reset"
+          title="Aktuelles Jahr laden"
+          onclick="resetToCurrentYear()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            enable-background="new 0 0 20 20"
+            height="40px"
+            viewBox="0 0 20 20"
+            width="40px"
+            fill="#e8eaed">
+            <g><rect fill="none" height="20" width="20" /></g>
+            <g>
+              <path
+                d="M17,10.5v-5C17,4.68,16.33,4,15.5,4H14V2.78c0-0.41-0.32-0.77-0.73-0.78c-0.42-0.01-0.77,0.33-0.77,0.75V4h-5V2.75 C7.5,2.33,7.15,1.99,6.73,2C6.32,2.01,6,2.37,6,2.78L6,4H4.5C3.67,4,3,4.68,3,5.5v11C3,17.33,3.67,18,4.5,18h6v-1.5h-6V9h11v1.5H17 z M16,20c-1.82,0-3.35-1.21-3.84-2.87c-0.09-0.32,0.15-0.63,0.48-0.63c0.22,0,0.42,0.15,0.48,0.36C13.5,18.1,14.64,19,16,19 c1.66,0,3-1.34,3-3s-1.34-3-3-3c-0.89,0-1.69,0.39-2.24,1l0.74,0c0.28,0,0.5,0.22,0.5,0.5c0,0.28-0.22,0.5-0.5,0.5h-2 c-0.28,0-0.5-0.22-0.5-0.5v-2c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5l0,0.85c0.73-0.83,1.81-1.35,3-1.35 c2.21,0,4,1.79,4,4C20,18.21,18.21,20,16,20z" />
+            </g>
+          </svg>
+        </button>
       </div>
 
-      <button id="nextButton">Next</button>
+      <button id="nextButton" title="nächstes Jahr">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="40px"
+          viewBox="0 0 24 24"
+          width="40px"
+          fill="#e8eaed">
+          <path d="M0 0h24v24H0V0z" fill="none" />
+          <path
+            d="M9.31 6.71c-.39.39-.39 1.02 0 1.41L13.19 12l-3.88 3.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41L10.72 6.7c-.38-.38-1.02-.38-1.41.01z" />
+        </svg>
+      </button>
+
+      <div id="topNav" class="overlay">
+        <div id="topNavMenu">
+          <div class="custom-select">
+            <select id="yearPicker" onchange="updateYearOnSelected()"></select>
+          </div>
+          <button
+            class="closebtn"
+            title="Auswahl bestätigen"
+            onclick="closeNav()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="40px"
+              viewBox="0 0 24 24"
+              width="40px"
+              fill="#e8eaed">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                d="M16 10.53c-.29-.29-.77-.29-1.06 0l-4.35 4.35L9 13.29c-.29-.29-.77-.29-1.06 0-.29.29-.29.77 0 1.06l1.94 1.94c.39.39 1.02.39 1.41 0l4.7-4.7c.3-.29.3-.77.01-1.06zM19 3h-1V2c0-.55-.45-1-1-1s-1 .45-1 1v1H8V2c0-.55-.45-1-1-1s-1 .45-1 1v1H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 16H6c-.55 0-1-.45-1-1V8h14v10c0 .55-.45 1-1 1z" />
+            </svg>
+          </button>
+          <button
+            id="reset"
+            title="Aktuelles Jahr laden"
+            onclick="resetToCurrentYear()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 20 20"
+              height="40px"
+              viewBox="0 0 20 20"
+              width="40px"
+              fill="#e8eaed">
+              <g><rect fill="none" height="20" width="20" /></g>
+              <g>
+                <path
+                  d="M17,10.5v-5C17,4.68,16.33,4,15.5,4H14V2.78c0-0.41-0.32-0.77-0.73-0.78c-0.42-0.01-0.77,0.33-0.77,0.75V4h-5V2.75 C7.5,2.33,7.15,1.99,6.73,2C6.32,2.01,6,2.37,6,2.78L6,4H4.5C3.67,4,3,4.68,3,5.5v11C3,17.33,3.67,18,4.5,18h6v-1.5h-6V9h11v1.5H17 z M16,20c-1.82,0-3.35-1.21-3.84-2.87c-0.09-0.32,0.15-0.63,0.48-0.63c0.22,0,0.42,0.15,0.48,0.36C13.5,18.1,14.64,19,16,19 c1.66,0,3-1.34,3-3s-1.34-3-3-3c-0.89,0-1.69,0.39-2.24,1l0.74,0c0.28,0,0.5,0.22,0.5,0.5c0,0.28-0.22,0.5-0.5,0.5h-2 c-0.28,0-0.5-0.22-0.5-0.5v-2c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5l0,0.85c0.73-0.83,1.81-1.35,3-1.35 c2.21,0,4,1.79,4,4C20,18.21,18.21,20,16,20z" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div id="yearContainer"></div>
