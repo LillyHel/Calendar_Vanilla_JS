@@ -22,6 +22,7 @@ This project is a fully dynamic calendar for any year, built with vanilla JavaSc
 
 ## Project Structure
 
+```
 📁 Calendar_Vanilla_JS
 ├── 📄 index.html // Main HTML structure
 ├── 📁 styles
@@ -30,6 +31,7 @@ This project is a fully dynamic calendar for any year, built with vanilla JavaSc
 │ └── 📄 main.js // JavaScript logic for calendar generation
 ├── 📄 service-worker.js // Service Worker for caching and offline usage
 └── 📄 manifest.json // PWA Manifest file
+```
 
 ---
 
