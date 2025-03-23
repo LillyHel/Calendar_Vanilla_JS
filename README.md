@@ -22,7 +22,14 @@ This project is a fully dynamic calendar for any year, built with vanilla JavaSc
 
 ## Project Structure
 
-📁 it_beleg ├── 📄 index.html // Main HTML structure ├── 📁 styles │ └── 📄 main.css // Styling ├── 📁 script │ └── 📄 main.js // JavaScript logic for calendar generation ├── 📄 service-worker.js // Service Worker for caching and offline usage └── 📄 manifest.json // PWA Manifest file (optional, für Installierbarkeit)
+📁 Calendar_Vanilla_JS
+├── 📄 index.html // Main HTML structure
+├── 📁 styles
+│ └── 📄 main.css // Styling
+├── 📁 script
+│ └── 📄 main.js // JavaScript logic for calendar generation
+├── 📄 service-worker.js // Service Worker for caching and offline usage
+└── 📄 manifest.json // PWA Manifest file
 
 ---
 
